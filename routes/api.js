@@ -1,9 +1,8 @@
 var express = require("express");
-
 var router = express.Router();
 
 var mongoose = require("mongoose");
-mongoose.connect(process.env.MONGOHQ_URL);
+mongoose.connect(process.env.MONGO_URL);
 
 var questionSchema = new mongoose.Schema({
   code: String,
@@ -96,9 +95,11 @@ router.get("/questions/:questionCode", function(req, res) {
   });
 });
 
+var util = require('../public/javascripts/util');
 
 router.get("/gravatar/:email", function(req, res) {
-  // Return the gravatar url as text
+  var md5email = util.md5(req.params.email);
+  res.end("http://www.gravatar.com/avatar/") + md5email();
 });
 
 module.exports = router;
